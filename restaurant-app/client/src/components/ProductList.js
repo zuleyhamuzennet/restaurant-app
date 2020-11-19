@@ -36,30 +36,40 @@ const ProductList = (props) => {
 
     }, []);
 
-    const addToCart = (product) => {
 
+    const addToCart = (product) => {
+        const element={
+            data:product,
+            number:1
+        }
         console.log("sepet : ", cart);
 
         if (cart.includes(product) == false) {
-            setCart([...cart, product]);
+            setCart([...cart, element]);
         }
 
     };
     const [count, setCount] = useState(0)
 
-    const increase = () => {
-        setCount(count => count + 1);
+    const increase = (element) => {
+        if(handleCheck(true)){
+            cart.element.number +=1;
+        }
+    }
+    const handleCheck=(val,cart) =>{
+        return cart.some(item => val.data === item.data);
     }
 
     const cartItems = cart.map((cart) => (
-        <tr key={cart.id}>
+        <tr key={cart.data.id}>
             <th>
-                < td>{cart.name}</td>
+                < td>{cart.data.name}</td>
             </th>
 
-            <th> <td>{cart.fiyat}</td></th>
+            <th> <td>{cart.data.fiyat}</td></th>
             <th><td></td></th>
-            <th> <button onClick={increase}>+</button></th>
+            <th> <button onClick={()=>increase(cart)}>+</button></th>
+            <th><td><label>{cart.data.number}</label></td></th>
 
 
         </tr>
