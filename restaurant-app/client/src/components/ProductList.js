@@ -16,10 +16,10 @@ const ProductList = (props) => {
                 category: category.category
             }
         })
-            .then(response => {
+            .then(response =>{
 
-                setProductList(response.data);
-                console.log(productList);
+                const array=response.data.map(product=>{return{...product,number:0}})
+                setProductList(array);
 
             }).catch(error => {
             console.log({error});
@@ -44,32 +44,35 @@ const ProductList = (props) => {
         }
         console.log("sepet : ", cart);
 
-        if (cart.includes(product) == false) {
+        if (cart.includes(element) == false) {
             setCart([...cart, element]);
+            console.log("Add cart",cart)
         }
 
     };
-    const [count, setCount] = useState(0)
 
     const increase = (element) => {
-        if(handleCheck(true)){
-            cart.element.number +=1;
+        console.log(cart);
+        if(handleCheck(element,cart)){
+            element.number +=1;
+            //setCart({...cart,element});
         }
     }
+
     const handleCheck=(val,cart) =>{
         return cart.some(item => val.data === item.data);
     }
 
-    const cartItems = cart.map((cart) => (
-        <tr key={cart.data.id}>
+    const cartItems = cart.map((c) => (
+        <tr key={c.data.id}>
             <th>
-                < td>{cart.data.name}</td>
+                < td>{c.data.name}</td>
             </th>
 
-            <th> <td>{cart.data.fiyat}</td></th>
+            <th> <td>{c.data.fiyat}</td></th>
             <th><td></td></th>
-            <th> <button onClick={()=>increase(cart)}>+</button></th>
-            <th><td><label>{cart.data.number}</label></td></th>
+            <th> <button onClick={()=>setCart(increase(c))}>+</button></th>
+            <th><td><label>{c.data.number}</label></td></th>
 
 
         </tr>
